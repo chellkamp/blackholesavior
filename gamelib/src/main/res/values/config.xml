@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="maxHz">60</integer>
+    <integer name="portraitWidthPx">1080</integer>
+    <integer name="portraitHeightPx">1920</integer>
+</resources>
