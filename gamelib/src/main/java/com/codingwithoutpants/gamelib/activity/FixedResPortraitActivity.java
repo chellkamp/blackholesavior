@@ -1,6 +1,5 @@
 package com.codingwithoutpants.gamelib.activity;
 
-
 import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -27,7 +26,7 @@ import com.codingwithoutpants.gamelib.view.ExtendedSurfaceView;
 public abstract class FixedResPortraitActivity extends Activity
         implements SurfaceHolder.Callback, View.OnTouchListener{
 
-    private ExtendedSurfaceView _surfaceView; // drawing surface
+    private ExtendedSurfaceView _surfaceView; // all drawing is done for this control
 
     private final Object _threadLock = new Object();
     private RenderThread _renderThread;
@@ -75,15 +74,16 @@ public abstract class FixedResPortraitActivity extends Activity
         float scaleRatio = (float)virtualWidth / (float)surfaceViewWidth;
         _coordinateTransform.setScale(scaleRatio, scaleRatio);
 
-        init();
+        init(); // initialize objects
 
         // Note to anyone: SurfaceView needs to be created in the UI thread.
         _surfaceView = new ExtendedSurfaceView(this);
-        _surfaceView.setFocusable(true); // allow inputs
 
         SurfaceHolder holder = _surfaceView.getHolder();
         holder.setFixedSize(virtualWidth, virtualHeight);
         holder.addCallback(this);
+
+        _surfaceView.setFocusable(true); // allow inputs
         _surfaceView.setOnTouchListener(this);
 
         // Set the SurfaceView to the fixed size that we calculated earlier and center it
@@ -97,6 +97,17 @@ public abstract class FixedResPortraitActivity extends Activity
         containingLayout.addView(_surfaceView, lp);
 
         setContentView(containingLayout);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        if (hasFocus) {
+            goFullScreen();
+        } else{
+            // code to handle window going out of focus goes here
+        }
     }
 
     /**
